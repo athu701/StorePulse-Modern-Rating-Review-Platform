@@ -10,10 +10,21 @@ const reactionRoutes = require("./routes/reaction.routes");
 const userRoutes = require("./routes/user.routes");
 
 const app = express();
+const allowedOrigins = [
+  "http://localhost:5173",  
+  process.env.FRONTEND_URL  
+];
 app.use(
   cors({
-    origin:"*",
-    credentials: true,
+    origin: function (origin, callback) {
+      // allow requests with no origin (like Postman) or from allowedOrigins
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true, // allow cookies
   })
 );
 

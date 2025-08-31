@@ -15,4 +15,19 @@ module.exports = {
       max: 10,
     },
   },
+
+  production: {
+    client: "pg",
+    connection: {
+      connectionString: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false }, // Render requires SSL
+    },
+    migrations: {
+      directory: "./migrations",
+    },
+    pool: {
+      min: 2,
+      max: 10,
+    },
+  },
 };

@@ -4,7 +4,7 @@ import axios from "axios";
 import ActionModal from "./ActionModal";
 import api from "../../api";
 
-export default function UserDetailPage() {
+export default function UserDetailPage({ role }) {
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
@@ -66,22 +66,27 @@ export default function UserDetailPage() {
         </div>
       </div>
 
-      {user.role !== "system_admin" && (
-        <div className="mb-4">
-          {user.role === "admin" ? (
-            <button
-              className="btn btn-warning text-white me-2"
-              onClick={() => openAction("removeAdmin", user.id)}
-            >
-              Remove Admin
-            </button>
-          ) : (
-            <button
-              className="btn btn-primary me-2"
-              onClick={() => openAction("makeAdmin", user.id)}
-            >
-              Make Admin
-            </button>
+      {(role === "system_admin" ||
+        (role === "admin" && user.role !== "admin")) && (
+        <div className="mb-4 d-flex align-items-center gap-2">
+          {role === "system_admin" && (
+            <>
+              {user.role === "admin" ? (
+                <button
+                  className="btn btn-warning text-white"
+                  onClick={() => openAction("removeAdmin", user.id)}
+                >
+                  Remove Admin
+                </button>
+              ) : (
+                <button
+                  className="btn btn-primary"
+                  onClick={() => openAction("makeAdmin", user.id)}
+                >
+                  Make Admin
+                </button>
+              )}
+            </>
           )}
 
           <button

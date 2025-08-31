@@ -165,19 +165,20 @@ function UsersTable({ role, searchTerm }) {
                       </>
                     )}
 
-                    {(role === "system_admin" || role === "admin") &&
-                      u.role !== "system_admin" &&
-                      u.role !== "admin" && (
-                        <button
-                          className="btn btn-danger btn-sm"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            openAction("delete", u.id);
-                          }}
-                        >
-                          <i className="bi bi-trash me-1"></i> Delete
-                        </button>
-                      )}
+                    {((role === "system_admin" && u.role !== "system_admin") ||
+                      (role === "admin" &&
+                        u.role !== "system_admin" &&
+                        u.role !== "admin")) && (
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openAction("delete", u.id);
+                        }}
+                      >
+                        Delete
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))

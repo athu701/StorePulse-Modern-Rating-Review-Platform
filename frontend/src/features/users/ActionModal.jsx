@@ -51,27 +51,23 @@ function ActionModal({
         method = "DELETE";
       }
 
-      const res = await api(url, {
+      await api(url, {
         method,
         data: { password },
         headers: { "Content-Type": "application/json" },
       });
 
-      if (!res.ok) {
-        let data;
-        try {
-          data = await res.json();
-        } catch {
-          data = { error: res.statusText || "Unknown error" };
-        }
-        throw new Error(data.error || "Something went wrong");
+      if (onActionComplete) {
+        await onActionComplete();
       }
-
-      onActionComplete();
       onClose();
-      navigate("/admin");
     } catch (err) {
-      setError(err.message);
+      const message =
+        err.response?.data?.error ||
+        err.response?.data?.message ||
+        err.message ||
+        "Something went wrong";
+      setError(message);
     } finally {
       setLoading(false);
     }

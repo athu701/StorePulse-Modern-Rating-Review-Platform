@@ -29,7 +29,7 @@ export default function AppRoutes({ currentUser }) {
       <Route path="/" element={DefaultDashboard} />
       <Route path="/store/:id" element={<Storecard_info />} />
       <Route path="/admin" element={<AdminDashboard role={role} />} />
-      <Route path="/admin/users/:userId" element={<UserDetailPage />} />
+      <Route path="/admin/users/:userId" element={<UserDetailPage role={role} />}/>
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/stores" element={<UserDashboard showLikedOnly={false} />} />

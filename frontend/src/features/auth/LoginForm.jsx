@@ -5,6 +5,7 @@ import { login } from "./AuthSlice";
 export default function LoginForm({ onSuccess, onCancel }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [flash, setFlash] = useState({ type: "", message: "", visible: false });
   const [loading, setLoading] = useState(false);
 
@@ -65,13 +66,22 @@ export default function LoginForm({ onSuccess, onCancel }) {
 
       <div className="mb-3">
         <label>Password</label>
-        <input
-          type="password"
-          className="form-control"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+        <div className="input-group">
+          <input
+            type={showPassword ? "text" : "password"}
+            className="form-control"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button
+            type="button"
+            className="btn btn-outline-secondary"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? "Hide" : "Show"}
+          </button>
+        </div>
       </div>
 
       <div className="d-flex justify-content-between align-items-center">

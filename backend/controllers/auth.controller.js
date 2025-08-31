@@ -47,9 +47,9 @@ async function signup(req, res) {
 
     res.cookie("authToken", token, {
       httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 7 * 24 * 3600 * 1000,
-      sameSite: "lax",
-      secure: false,
     });
 
     return res.status(201).json({ user, message });
@@ -80,9 +80,9 @@ async function login(req, res) {
 
     res.cookie("authToken", token, {
       httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 7 * 24 * 3600 * 1000,
-      sameSite: "lax",
-      secure: false,
     });
     console.log("cookie SendmailTransport");
     res.json({ user });

@@ -47,7 +47,7 @@ function Storecard_info() {
         }}
       >
         <div className="row g-0">
-          <div className="col-md-5 position-relative">
+          <div className="col-md-5 d-flex justify-content-center align-items-center position-relative">
             <img
               src={store.image_url}
               alt={store.name}

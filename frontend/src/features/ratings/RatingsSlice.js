@@ -60,9 +60,21 @@ export const fetchReviews = createAsyncThunk(
 
 export const addRating = createAsyncThunk(
   "ratings/addRating",
-  async ({ data }) => {
-    const res = await addRatingAPI(data);
-    return normalizeReview(res.data);
+  async ({ data }, { rejectWithValue }) => {
+    try {
+      const res = await addRatingAPI(data);
+
+      if (!res.data.success) {
+        return rejectWithValue(res.data.error || "Failed to submit review");
+      }
+
+      return {
+        review: normalizeReview(res.data.review),
+        averageRating: res.data.averageRating,
+      };
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.error || err.message);
+    }
   }
 );
 
@@ -88,7 +100,7 @@ export const replyToReview = createAsyncThunk(
     const userId = getState().auth.user.id;
 
     const res = await api.post(
-      `api/ratings/${reviewId}/reply`,
+      `ratings/${reviewId}/reply`,
       {
         userId,
         storeId,
@@ -133,11 +145,6 @@ const ratingsSlice = createSlice({
         state.error = action.error?.message || "Failed to fetch ratings";
       })
 
-      .addCase(addRating.fulfilled, (state, action) => {
-        state.reviews.push(action.payload);
-        state.averageRating = recomputeAverage(state.reviews);
-      })
-
       .addCase(updateRating.fulfilled, (state, action) => {
         state.reviews = updateNode(state.reviews, action.payload);
         state.averageRating = recomputeAverage(state.reviews);
@@ -155,6 +162,26 @@ const ratingsSlice = createSlice({
           if (!parent.replies) parent.replies = [];
           parent.replies.push(reply);
         }
+      })
+      .addCase(addRating.fulfilled, (state, action) => {
+        const { review, averageRating } = action.payload;
+
+        if (review.parentReviewId) {
+          state.reviews = insertReply(state.reviews, review);
+        } else {
+          state.reviews.unshift(review);
+        }
+
+        state.averageRating =
+          typeof averageRating === "number"
+            ? averageRating
+            : recomputeAverage(state.reviews);
+
+        state.error = null; // clear any old error
+      })
+
+      .addCase(addRating.rejected, (state, action) => {
+        state.error = action.payload || "Could not add review";
       });
   },
 });

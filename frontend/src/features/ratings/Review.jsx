@@ -265,14 +265,25 @@ const Reviews = ({ storeId }) => {
   const { user } = useSelector((state) => state.auth);
   const currentUserId = user?.id;
 
+  const [flash, setFlash] = useState(null);
+  const { error } = useSelector((state) => state.ratings);
+
   useEffect(() => {
     if (storeId) {
       dispatch(fetchReviews(storeId));
     }
   }, [dispatch, storeId]);
 
+  useEffect(() => {
+    if (error) {
+      setFlash(error);
+      const t = setTimeout(() => setFlash(null), 5000);
+      return () => clearTimeout(t);
+    }
+  }, [error]);
+
   const handleReply = (reviewId, content, storeId) => {
-    dispatch(replyToReview({ reviewId, content, storeId }));
+    dispatch(replyToReview({ reviewId, text: content, storeId }));
   };
 
   const handleEdit = (reviewId, newContent) => {
@@ -287,6 +298,20 @@ const Reviews = ({ storeId }) => {
 
   return (
     <div className="reviews mt-4">
+      {flash && (
+        <div
+          className="alert alert-danger alert-dismissible fade show"
+          role="alert"
+        >
+          {flash}
+          <button
+            type="button"
+            className="btn-close"
+            onClick={() => setFlash(null)}
+          ></button>
+        </div>
+      )}
+
       <h5 className="mb-3">Customer Reviews</h5>
       {reviews.length === 0 ? (
         user ? (

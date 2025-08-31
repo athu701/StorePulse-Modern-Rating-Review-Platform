@@ -12,15 +12,30 @@ export default function RatingForm({ storeId, existingReview, onClose }) {
   if (!user) {
     return <p className="text-danger">You must be logged in to review.</p>;
   }
+const handleSubmit = async () => {
+  if (!canSubmit) return;
 
-  const handleSubmit = () => {
-    if (existingReview) {
-      dispatch(updateRating({ id: existingReview.id, rating, comment }));
-    } else {
-      dispatch(addRating({ storeId, rating, comment }));
-    }
-    onClose();
-  };
+  try {
+    await dispatch(
+      addRating({
+        data: {
+          store_id: storeId,
+          user_id: user.id,
+          rating: newReviewRating,
+          review: newReviewText.trim(),
+        },
+      })
+    ).unwrap();
+
+    // ✅ Refetch reviews immediately after successful submit
+    dispatch(fetchReviews(storeId));
+
+    setNewReviewText("");
+    setNewReviewRating(0);
+  } catch (err) {
+    console.error("Failed to submit review:", err);
+  }
+};
 
   return (
     <div className="modal show d-block" tabIndex="-1">

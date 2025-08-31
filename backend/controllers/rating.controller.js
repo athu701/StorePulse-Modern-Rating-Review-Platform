@@ -103,7 +103,7 @@ async function addreply(req, res) {
         parent_review_id: parentId,
       })
       .returning("*");
-    console.log("reply saved");
+    console.log("reply saved",reply);
 
     const user = await knex("users").where({ id: userId }).first();
 

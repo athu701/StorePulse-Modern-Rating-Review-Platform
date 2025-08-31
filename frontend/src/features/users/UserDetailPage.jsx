@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import jwtDecode from "jwt-decode"; // npm install jwt-decode
+import axios from "axios";
 import ActionModal from "./ActionModal";
 import api from "../../api";
 
@@ -9,8 +9,8 @@ export default function UserDetailPage() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [user, setUser] = useState(null);  // user being viewed
-  const [currentUser, setCurrentUser] = useState(null); // logged in user (from token)
+  const [user, setUser] = useState(null);       // user being viewed
+  const [currentUser, setCurrentUser] = useState(null); // logged-in user (from localStorage)
   const [likedStores, setLikedStores] = useState([]);
   const [reviewedStores, setReviewedStores] = useState([]);
 
@@ -23,11 +23,10 @@ export default function UserDetailPage() {
   useEffect(() => {
     if (userId) fetchUserData(userId);
 
-    // ✅ Get current user from token
-    const token = localStorage.getItem("token");
-    if (token) {
-      const decoded = jwtDecode(token);
-      setCurrentUser(decoded); // decoded should have { id, role, ... }
+    // ✅ get current user from localStorage
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setCurrentUser(JSON.parse(storedUser)); // should contain role, id, etc.
     }
   }, [userId]);
 
@@ -70,7 +69,7 @@ export default function UserDetailPage() {
         </div>
       </div>
 
-      {/* Action buttons with your constraints */}
+      {/* ✅ Action buttons with your rules */}
       <div className="mb-4">
         {currentUser.role === "system_admin" && (
           <>
@@ -92,7 +91,6 @@ export default function UserDetailPage() {
               )
             )}
 
-            {/* System admin can delete any except system_admin */}
             {user.role !== "system_admin" && (
               <button
                 className="btn btn-danger"
@@ -106,7 +104,7 @@ export default function UserDetailPage() {
 
         {currentUser.role === "admin" && (
           <>
-            {/* Admins: only delete, not for admins/system_admins */}
+            {/* Admins only get delete, not for admins/system_admins */}
             {user.role !== "admin" && user.role !== "system_admin" && (
               <button
                 className="btn btn-danger"
@@ -119,8 +117,7 @@ export default function UserDetailPage() {
         )}
       </div>
 
-      {/* ... rest of liked/reviewed stores unchanged ... */}
-
+      {/* rest of liked/reviewed stores UI stays same */}
 
       <div className="card mb-4">
         <div className="card-header bg-light">

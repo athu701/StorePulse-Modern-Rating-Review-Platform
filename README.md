@@ -4,8 +4,8 @@
 It is designed as a **Single Page Application (SPA)** for smooth navigation and enhanced user experience.
 
 ## 🌐 Live Demo
-Frontend: [Render Deployment (Static Site)](your-frontend-link)  
-Backend API: [Render Deployment (Service)](your-backend-link)  
+Frontend: [Render Deployment (Static Site)](https://storepulse-modern-rating-review-platform-dj8n.onrender.com)  
+Backend API: [Render Deployment (Service)](https://storepulse-modern-rating-review-platform.onrender.com)  
 *(Links are also in the repository description)*
 
 ---
@@ -131,4 +131,5 @@ The database ensures **data integrity, performance, and consistency**:
    ```bash
    git clone https://github.com/your-username/StorePulse-Modern-Rating-Review-Platform.git
    cd StorePulse-Modern-Rating-Review-Platform
+
 

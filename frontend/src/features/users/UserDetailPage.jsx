@@ -9,8 +9,7 @@ export default function UserDetailPage() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [user, setUser] = useState(null);       // user being viewed
-  const [currentUser, setCurrentUser] = useState(null); // logged-in user (from localStorage)
+  const [user, setUser] = useState(null);
   const [likedStores, setLikedStores] = useState([]);
   const [reviewedStores, setReviewedStores] = useState([]);
 
@@ -22,12 +21,6 @@ export default function UserDetailPage() {
 
   useEffect(() => {
     if (userId) fetchUserData(userId);
-
-    // ✅ get current user from localStorage
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setCurrentUser(JSON.parse(storedUser)); // should contain role, id, etc.
-    }
   }, [userId]);
 
   const fetchUserData = async (uid) => {
@@ -47,7 +40,7 @@ export default function UserDetailPage() {
     setModalOpen(true);
   };
 
-  if (!user || !currentUser) return <p className="text-center mt-5">Loading...</p>;
+  if (!user) return <p className="text-center mt-5">Loading...</p>;
 
   return (
     <div className="container mt-4">
@@ -60,8 +53,12 @@ export default function UserDetailPage() {
           <h2 className="card-title">
             {user.name} <small className="text-muted">({user.username})</small>
           </h2>
-          <p><strong>Email:</strong> {user.email}</p>
-          <p><strong>Address:</strong> {user.address}</p>
+          <p>
+            <strong>Email:</strong> {user.email}
+          </p>
+          <p>
+            <strong>Address:</strong> {user.address}
+          </p>
           <p>
             <strong>Role:</strong>{" "}
             <span className="badge bg-info">{user.role}</span>
@@ -69,55 +66,32 @@ export default function UserDetailPage() {
         </div>
       </div>
 
-      {/* ✅ Action buttons with your rules */}
-      <div className="mb-4">
-        {currentUser.role === "system_admin" && (
-          <>
-            {user.role === "admin" ? (
-              <button
-                className="btn btn-warning text-white me-2"
-                onClick={() => openAction("removeAdmin", user.id)}
-              >
-                Remove Admin
-              </button>
-            ) : (
-              user.role !== "system_admin" && (
-                <button
-                  className="btn btn-primary me-2"
-                  onClick={() => openAction("makeAdmin", user.id)}
-                >
-                  Make Admin
-                </button>
-              )
-            )}
+      {user.role !== "system_admin" && (
+        <div className="mb-4">
+          {user.role === "admin" ? (
+            <button
+              className="btn btn-warning text-white me-2"
+              onClick={() => openAction("removeAdmin", user.id)}
+            >
+              Remove Admin
+            </button>
+          ) : (
+            <button
+              className="btn btn-primary me-2"
+              onClick={() => openAction("makeAdmin", user.id)}
+            >
+              Make Admin
+            </button>
+          )}
 
-            {user.role !== "system_admin" && (
-              <button
-                className="btn btn-danger"
-                onClick={() => openAction("delete", user.id)}
-              >
-                Delete User
-              </button>
-            )}
-          </>
-        )}
-
-        {currentUser.role === "admin" && (
-          <>
-            {/* Admins only get delete, not for admins/system_admins */}
-            {user.role !== "admin" && user.role !== "system_admin" && (
-              <button
-                className="btn btn-danger"
-                onClick={() => openAction("delete", user.id)}
-              >
-                Delete User
-              </button>
-            )}
-          </>
-        )}
-      </div>
-
-      {/* rest of liked/reviewed stores UI stays same */}
+          <button
+            className="btn btn-danger"
+            onClick={() => openAction("delete", user.id)}
+          >
+            Delete User
+          </button>
+        </div>
+      )}
 
       <div className="card mb-4">
         <div className="card-header bg-light">

@@ -124,13 +124,3 @@ The database ensures **data integrity, performance, and consistency**:
 - Stores like/dislike per user per store (unique constraint)  
 
 ---
-
-## ⚡ Setup Instructions
-
-1. **Clone the repo**
-   ```bash
-   git clone https://github.com/your-username/StorePulse-Modern-Rating-Review-Platform.git
-   cd StorePulse-Modern-Rating-Review-Platform
-
-
-

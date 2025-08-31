@@ -75,7 +75,7 @@ function UsersTable({ role, searchTerm }) {
       u.email.toLowerCase().includes(term) ||
       u.name?.toLowerCase().includes(term)
     );
-  });
+  }).sort((a, b) => a.id - b.id);
 
   const handleRowClick = (user, event) => {
     if (event.target.closest("button")) return;

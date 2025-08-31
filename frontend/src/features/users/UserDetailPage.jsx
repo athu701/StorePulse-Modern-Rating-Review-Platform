@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
+import jwtDecode from "jwt-decode"; // npm install jwt-decode
 import ActionModal from "./ActionModal";
 import api from "../../api";
 
@@ -9,7 +9,8 @@ export default function UserDetailPage() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null);  // user being viewed
+  const [currentUser, setCurrentUser] = useState(null); // logged in user (from token)
   const [likedStores, setLikedStores] = useState([]);
   const [reviewedStores, setReviewedStores] = useState([]);
 
@@ -21,6 +22,13 @@ export default function UserDetailPage() {
 
   useEffect(() => {
     if (userId) fetchUserData(userId);
+
+    // ✅ Get current user from token
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decoded = jwtDecode(token);
+      setCurrentUser(decoded); // decoded should have { id, role, ... }
+    }
   }, [userId]);
 
   const fetchUserData = async (uid) => {
@@ -40,7 +48,7 @@ export default function UserDetailPage() {
     setModalOpen(true);
   };
 
-  if (!user) return <p className="text-center mt-5">Loading...</p>;
+  if (!user || !currentUser) return <p className="text-center mt-5">Loading...</p>;
 
   return (
     <div className="container mt-4">
@@ -53,12 +61,8 @@ export default function UserDetailPage() {
           <h2 className="card-title">
             {user.name} <small className="text-muted">({user.username})</small>
           </h2>
-          <p>
-            <strong>Email:</strong> {user.email}
-          </p>
-          <p>
-            <strong>Address:</strong> {user.address}
-          </p>
+          <p><strong>Email:</strong> {user.email}</p>
+          <p><strong>Address:</strong> {user.address}</p>
           <p>
             <strong>Role:</strong>{" "}
             <span className="badge bg-info">{user.role}</span>
@@ -66,32 +70,57 @@ export default function UserDetailPage() {
         </div>
       </div>
 
-      {user.role !== "system_admin" && (
-        <div className="mb-4">
-          {user.role === "admin" ? (
-            <button
-              className="btn btn-warning text-white me-2"
-              onClick={() => openAction("removeAdmin", user.id)}
-            >
-              Remove Admin
-            </button>
-          ) : (
-            <button
-              className="btn btn-primary me-2"
-              onClick={() => openAction("makeAdmin", user.id)}
-            >
-              Make Admin
-            </button>
-          )}
+      {/* Action buttons with your constraints */}
+      <div className="mb-4">
+        {currentUser.role === "system_admin" && (
+          <>
+            {user.role === "admin" ? (
+              <button
+                className="btn btn-warning text-white me-2"
+                onClick={() => openAction("removeAdmin", user.id)}
+              >
+                Remove Admin
+              </button>
+            ) : (
+              user.role !== "system_admin" && (
+                <button
+                  className="btn btn-primary me-2"
+                  onClick={() => openAction("makeAdmin", user.id)}
+                >
+                  Make Admin
+                </button>
+              )
+            )}
 
-          <button
-            className="btn btn-danger"
-            onClick={() => openAction("delete", user.id)}
-          >
-            Delete User
-          </button>
-        </div>
-      )}
+            {/* System admin can delete any except system_admin */}
+            {user.role !== "system_admin" && (
+              <button
+                className="btn btn-danger"
+                onClick={() => openAction("delete", user.id)}
+              >
+                Delete User
+              </button>
+            )}
+          </>
+        )}
+
+        {currentUser.role === "admin" && (
+          <>
+            {/* Admins: only delete, not for admins/system_admins */}
+            {user.role !== "admin" && user.role !== "system_admin" && (
+              <button
+                className="btn btn-danger"
+                onClick={() => openAction("delete", user.id)}
+              >
+                Delete User
+              </button>
+            )}
+          </>
+        )}
+      </div>
+
+      {/* ... rest of liked/reviewed stores unchanged ... */}
+
 
       <div className="card mb-4">
         <div className="card-header bg-light">

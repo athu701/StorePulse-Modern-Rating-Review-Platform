@@ -66,16 +66,18 @@ function UsersTable({ role, searchTerm }) {
     );
   };
 
-  const filteredUsers = users.filter((u) => {
-    if (!searchTerm) return true;
-    const term = searchTerm.toLowerCase();
-    return (
-      u.id.toString().includes(term) ||
-      u.username.toLowerCase().includes(term) ||
-      u.email.toLowerCase().includes(term) ||
-      u.name?.toLowerCase().includes(term)
-    );
-  }).sort((a, b) => a.id - b.id);
+  const filteredUsers = users
+    .filter((u) => {
+      if (!searchTerm) return true;
+      const term = searchTerm.toLowerCase();
+      return (
+        u.id.toString().includes(term) ||
+        u.username.toLowerCase().includes(term) ||
+        u.email.toLowerCase().includes(term) ||
+        u.name?.toLowerCase().includes(term)
+      );
+    })
+    .sort((a, b) => a.id - b.id);
 
   const handleRowClick = (user, event) => {
     if (event.target.closest("button")) return;
@@ -164,7 +166,8 @@ function UsersTable({ role, searchTerm }) {
                     )}
 
                     {(role === "system_admin" || role === "admin") &&
-                      u.role !== "system_admin" && (
+                      u.role !== "system_admin" &&
+                      u.role !== "admin" && (
                         <button
                           className="btn btn-danger btn-sm"
                           onClick={(e) => {

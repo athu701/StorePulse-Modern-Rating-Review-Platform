@@ -51,9 +51,10 @@ export default function UserDashboard({
     dispatch(getStores());
   }, [dispatch]);
 
-  if (switchToAdmin && (role === "admin" || role === "system_admin")) {
-    return <AdminDashboard role={role} />;
-  }
+ if (switchToAdmin && (role === "admin" || role === "system_admin")) {
+  return <Navigate to="/admin" replace state={{ role }} />;
+}
+
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStore, setSelectedStore] = useState(null);

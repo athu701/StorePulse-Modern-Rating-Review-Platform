@@ -6,6 +6,8 @@ import Navbar from "../../components/common/Navbar";
 import Footer from "../../components/common/Footer";
 import DefaultDashboard from "../User/UserDashboard";
 import UserDashboard from "../User/UserDashboard";
+import { Navigate } from "react-router-dom";
+
 
 function Dashboard({ role }) {
   const [view, setView] = useState("users");

@@ -7,7 +7,7 @@ import Footer from "../../components/common/Footer";
 import DefaultDashboard from "../User/UserDashboard";
 import UserDashboard from "../User/UserDashboard";
 
-function Dashboard() {
+function Dashboard({ role }) {
   const [view, setView] = useState("users");
   const [selectedUser, setSelectedUser] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -20,28 +20,19 @@ function Dashboard() {
     JSON.parse(localStorage.getItem("user"));
 
   if (roleChoice === "user") {
-    return <UserDashboard />;
+    return <UserDashboard role={role} />;
   }
 
   return (
     <div className="flex flex-col min-h-screen">
       <div className="p-2 bg-gray-100 text-center border-b">
-        <span className="mr-4 font-semibold">Sign in as:</span>
-        <button
-          onClick={() => setRoleChoice("admin")}
-          className={`px-3 py-1 rounded mr-2 ${
-            roleChoice === "admin" ? "bg-blue-600 text-white" : "bg-gray-300"
-          }`}
-        >
-          Admin
-        </button>
         <button
           onClick={() => setRoleChoice("user")}
           className={`px-3 py-1 rounded ${
             roleChoice === "user" ? "bg-blue-600 text-white" : "bg-gray-300"
           }`}
         >
-          User
+          Go to User Dashboard
         </button>
       </div>
 

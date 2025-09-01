@@ -19,9 +19,9 @@ export default function AppRoutes({ currentUser }) {
   if (role === "system_admin" || role === "admin") {
     DefaultDashboard = <AdminDashboard role={role} />;
   } else if (role === "store_owner" || role === "normal_user") {
-    DefaultDashboard = <UserDashboard />;
+    DefaultDashboard = <UserDashboard role={role} />;
   } else {
-    DefaultDashboard = <UserDashboard />;
+    DefaultDashboard = <UserDashboard role={role} />;
   }
 
   return (
@@ -29,13 +29,28 @@ export default function AppRoutes({ currentUser }) {
       <Route path="/" element={DefaultDashboard} />
       <Route path="/store/:id" element={<Storecard_info />} />
       <Route path="/admin" element={<AdminDashboard role={role} />} />
-      <Route path="/admin/users/:userId" element={<UserDetailPage role={role} />}/>
+      <Route
+        path="/admin/users/:userId"
+        element={<UserDetailPage role={role} />}
+      />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
-      <Route path="/stores" element={<UserDashboard showLikedOnly={false} />} />
-      <Route path="/liked-stores" element={<UserDashboard showLikedOnly />} />
-      <Route path="/my-ratings" element={<UserDashboard showReviewedOnly />} />
-      <Route path="/my-stores" element={<UserDashboard showMyStoresOnly />} />
+      <Route
+        path="/stores"
+        element={<UserDashboard role={role} showLikedOnly={false} />}
+      />
+      <Route
+        path="/liked-stores"
+        element={<UserDashboard role={role} showLikedOnly />}
+      />
+      <Route
+        path="/my-ratings"
+        element={<UserDashboard role={role} showReviewedOnly />}
+      />
+      <Route
+        path="/my-stores"
+        element={<UserDashboard role={role} showMyStoresOnly />}
+      />
       <Route path="/profile/:id" element={<ProfilePage />} />
       <Route path="/create-store" element={<Createstore />} />
       <Route path="/edit-store/:id" element={<EditStore />} />

@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getStores } from "../../features/stores/StoresSlice";
 import { Link } from "react-router-dom";
 import CompactReviewFormFullCard from "../../features/ratings/CompactReviewForm";
+import AdminDashboard from "../Admin/AdminDashboard";
 
 const backdropStyle = {
   position: "fixed",
@@ -35,6 +36,7 @@ const modalStyle = {
 };
 
 export default function UserDashboard({
+  role,
   showLikedOnly = false,
   showReviewedOnly = false,
   showMyStoresOnly = false,
@@ -43,9 +45,15 @@ export default function UserDashboard({
   const { list: stores } = useSelector((state) => state.stores);
   const { user, loading } = useSelector((state) => state.auth);
 
+  const [switchToAdmin, setSwitchToAdmin] = useState(false);
+
   useEffect(() => {
     dispatch(getStores());
   }, [dispatch]);
+
+  if (switchToAdmin && (role === "admin" || role === "system_admin")) {
+    return <AdminDashboard role={role} />;
+  }
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStore, setSelectedStore] = useState(null);
@@ -114,7 +122,17 @@ export default function UserDashboard({
     <div
       style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
     >
-<Navbar onSearch={setSearchTerm} onAuthModalOpen={setModalOpen} />
+      {(role === "admin" || role === "system_admin") && (
+        <div className="p-2 bg-gray-100 text-center border-b">
+          <button
+            onClick={() => setSwitchToAdmin(true)}
+            className="px-3 py-1 rounded bg-blue-600 text-white"
+          >
+            Go to Admin Dashboard
+          </button>
+        </div>
+      )}
+      <Navbar onSearch={setSearchTerm} onAuthModalOpen={setModalOpen} />
 
       <h1 style={{ marginLeft: "100px", marginTop: "20px" }}>
         Hello {user?.username}

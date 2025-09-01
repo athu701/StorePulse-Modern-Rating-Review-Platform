@@ -83,21 +83,28 @@ Backend API: [Render Deployment (Service)](https://storepulse-modern-rating-revi
 - Edit details & update password  
 
 
+.
+## 👥 User Role Management
 
-User Role Management
+The application implements **dynamic role assignment** based on user actions and administrative privileges:
 
-The application implements dynamic role assignment based on user actions and administrative privileges:
-Sign Up:
-Every new user is assigned the role normal_user by default.
-Creating a Store:
-When a user creates a store, their role automatically changes to store_owner.
-Deleting Stores:
-If a store owner or admin deletes all their stores, their role reverts back to normal_user.
-Admin Privileges:
-A system admin can promote any user to admin.
-If a system admin removes a user’s admin privileges:
-The role reverts to store_owner if the user owns any stores.
-Otherwise, it reverts to normal_user.
+### Sign Up
+- Every new user is assigned the role **`normal_user`** by default.
+
+### Creating a Store
+- When a user creates a store, their role automatically changes to **`store_owner`**.
+
+### Deleting Stores
+- If a store owner deletes all their stores, their role reverts back to **`normal_user`**.
+
+### Admin Privileges
+- A **system admin** can promote any user to **`admin`**.
+- If a system admin removes a user’s admin privileges:
+  - The role reverts to **`store_owner`** if the user owns any stores.
+  - Otherwise, it reverts to **`normal_user`**.
+
+> This ensures that user roles always reflect their current permissions and responsibilities within the platform.
+
 
 This ensures that user roles always reflect their current permissions and responsibilities within the platform.
 ---
@@ -142,4 +149,5 @@ The database ensures **data integrity, performance, and consistency**:
 - Stores like/dislike per user per store (unique constraint)  
 
 ---
+
 

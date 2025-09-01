@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { signup } from "./AuthSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function SignupForm({ onSuccess, onCancel }) {
   const [form, setForm] = useState({
@@ -16,6 +17,7 @@ export default function SignupForm({ onSuccess, onCancel }) {
   const [showPassword, setShowPassword] = useState(false);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const showFlash = (type, message) => {
     setFlash({ type, message, visible: true });
@@ -133,6 +135,18 @@ export default function SignupForm({ onSuccess, onCancel }) {
           </button>
         )}
       </div>
+
+      <hr className="my-3" />
+      <p className="text-center">
+        Already have an account?{" "}
+        <button
+          type="button"
+          className="btn btn-outline-primary rounded-pill px-4 py-2 shadow-sm"
+          onClick={() => navigate("/login")}
+        >
+          🚀 Log In
+        </button>
+      </p>
     </form>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "./AuthSlice";
+import { Link } from "react-router-dom";
 
 export default function LoginForm({ onSuccess, onCancel }) {
   const [email, setEmail] = useState("");
@@ -23,10 +24,8 @@ export default function LoginForm({ onSuccess, onCancel }) {
 
     try {
       const user = await dispatch(login({ email, password })).unwrap();
-
       setLoading(false);
       showFlash("success", "Login successful! 🎉");
-
       if (onSuccess) onSuccess();
     } catch (err) {
       setLoading(false);
@@ -84,7 +83,7 @@ export default function LoginForm({ onSuccess, onCancel }) {
         </div>
       </div>
 
-      <div className="d-flex justify-content-between align-items-center">
+      <div className="d-flex justify-content-between align-items-center mb-3">
         <button className="btn btn-primary" type="submit" disabled={loading}>
           {loading ? "Logging in..." : "Login"}
         </button>
@@ -97,6 +96,16 @@ export default function LoginForm({ onSuccess, onCancel }) {
             Cancel
           </button>
         )}
+      </div>
+
+      <div className="text-center">
+        <span>Don’t have an account? </span>
+        <Link
+          to="/signup"
+          className="btn btn-outline-success rounded-pill px-4 py-2 shadow-sm"
+        >
+          ✨ Sign Up
+        </Link>
       </div>
     </form>
   );

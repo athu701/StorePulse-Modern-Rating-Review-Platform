@@ -51,10 +51,9 @@ export default function UserDashboard({
     dispatch(getStores());
   }, [dispatch]);
 
- if (switchToAdmin && (role === "admin" || role === "system_admin")) {
-  return <Navigate to="/admin" replace state={{ role }} />;
-}
-
+  if (switchToAdmin && (role === "admin" || role === "system_admin")) {
+    return <Navigate to="/admin" replace state={{ role }} />;
+  }
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStore, setSelectedStore] = useState(null);
@@ -124,15 +123,16 @@ export default function UserDashboard({
       style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
     >
       {(role === "admin" || role === "system_admin") && (
-        <div className="p-2 bg-gray-100 text-center border-b">
+        <div className="p-4 bg-gradient-to-r from-gray-100 to-gray-200 text-center border-b shadow-sm">
           <button
             onClick={() => setSwitchToAdmin(true)}
-            className="px-3 py-1 rounded bg-blue-600 text-white"
+            className="px-6 py-2 rounded-xl font-semibold shadow-md bg-purple-600 text-white hover:bg-purple-700 transform transition-all duration-200 hover:scale-105"
           >
-            Go to Admin Dashboard
+            🛠 Go to Admin Dashboard
           </button>
         </div>
       )}
+
       <Navbar onSearch={setSearchTerm} onAuthModalOpen={setModalOpen} />
 
       <h1 style={{ marginLeft: "100px", marginTop: "20px" }}>

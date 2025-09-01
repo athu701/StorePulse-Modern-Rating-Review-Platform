@@ -27,16 +27,19 @@ function Dashboard({ role }) {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="p-2 bg-gray-100 text-center border-b">
-        <button
-          onClick={() => setRoleChoice("user")}
-          className={`px-3 py-1 rounded ${
-            roleChoice === "user" ? "bg-blue-600 text-white" : "bg-gray-300"
-          }`}
-        >
-          Go to User Dashboard
-        </button>
-      </div>
+      <div className="p-4 bg-gradient-to-r from-gray-100 to-gray-200 text-center border-b shadow-sm">
+  <button
+    onClick={() => setRoleChoice("user")}
+    className={`px-6 py-2 rounded-xl font-semibold shadow-md transform transition-all duration-200
+      ${
+        roleChoice === "user"
+          ? "bg-blue-600 text-white hover:bg-blue-700 scale-105"
+          : "bg-gray-300 text-gray-700 hover:bg-gray-400"
+      }`}
+  >
+    🏠 Go to User Dashboard
+  </button>
+</div>
 
       <Navbar onSearch={setSearchTerm} onAuthModalOpen={setModalOpen} />
 

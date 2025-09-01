@@ -95,7 +95,7 @@ The application implements **dynamic role assignment** based on user actions and
 - When a user creates a store, their role automatically changes to **`store_owner`**.
 
 ### Deleting Stores
-- If a store owner deletes all their stores, their role reverts back to **`normal_user`**.
+- If a store owner or admin deletes all their stores, their role reverts back to **`normal_user`**.
 
 ### Admin Privileges
 - A **system admin** can promote any user to **`admin`**.
@@ -149,5 +149,6 @@ The database ensures **data integrity, performance, and consistency**:
 - Stores like/dislike per user per store (unique constraint)  
 
 ---
+
 
 

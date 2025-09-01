@@ -21,13 +21,16 @@ async function getUserRatingForStore(userId, storeId) {
 async function getAverageRatingForStore(storeId) {
   const result = await db("ratings")
     .where({ store_id: storeId })
+    .whereNull("parent_review_id") 
     .avg("rating as avg_rating")
     .first();
+
   const avgClean = parseFloat(result.avg_rating) || 0;
   return Number.isInteger(avgClean)
     ? avgClean
     : parseFloat(avgClean.toFixed(1));
 }
+
 
 async function getRatingsForStore(storeId) {
   return db("ratings").where({ store_id: storeId }).select("*");

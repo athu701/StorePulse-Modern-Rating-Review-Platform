@@ -98,7 +98,7 @@ export default function LoginForm({ onSuccess, onCancel }) {
         )}
       </div>
 
-      <div className="text-center">
+      {/* <div className="text-center">
         <span>Don’t have an account? </span>
         <Link
           to="/signup"
@@ -106,7 +106,7 @@ export default function LoginForm({ onSuccess, onCancel }) {
         >
           ✨ Sign Up
         </Link>
-      </div>
+      </div> */}
     </form>
   );
 }

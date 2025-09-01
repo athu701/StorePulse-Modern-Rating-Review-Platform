@@ -114,7 +114,7 @@ export default function UserDashboard({
     <div
       style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
     >
-      <Navbar onSearch={setSearchTerm} onAuthModalOpen={setModalOpen} />
+<Navbar onSearch={setSearchTerm} onAuthModalOpen={setModalOpen} />
 
       <h1 style={{ marginLeft: "100px", marginTop: "20px" }}>
         Hello {user?.username}
@@ -253,6 +253,16 @@ export default function UserDashboard({
               onSuccess={() => setModalOpen(null)}
               onCancel={() => setModalOpen(null)}
             />
+
+            <div className="mt-3 text-center">
+              <small className="fs-6">Don’t have an account? </small>
+              <button
+                className="btn btn-primary"
+                onClick={() => setModalOpen("signup")}
+              >
+                Sign Up
+              </button>
+            </div>
           </div>
         </>
       )}
@@ -288,6 +298,16 @@ export default function UserDashboard({
               }}
               onCancel={() => setModalOpen(null)}
             />
+
+            <div className="mt-3 text-center">
+              <small className="fs-6">If you already have an account </small>
+              <button
+                className="btn btn-primary"
+                onClick={() => setModalOpen("login")}
+              >
+                Login
+              </button>
+            </div>
           </div>
         </>
       )}

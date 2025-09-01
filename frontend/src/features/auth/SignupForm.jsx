@@ -137,7 +137,7 @@ export default function SignupForm({ onSuccess, onCancel }) {
       </div>
 
       <hr className="my-3" />
-      <p className="text-center">
+      {/* <p className="text-center">
         Already have an account?{" "}
         <button
           type="button"
@@ -146,7 +146,7 @@ export default function SignupForm({ onSuccess, onCancel }) {
         >
           🚀 Log In
         </button>
-      </p>
+      </p> */}
     </form>
   );
 }
